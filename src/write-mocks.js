@@ -77,7 +77,7 @@ function createFixturesDir (destination) {
 
 }
 
-function writeFixture (route, response, destination) {
+function writeFixture (route, response, destination) {  
   const extension = route.isJson ?
     ".json" :
     ".html";
@@ -88,12 +88,16 @@ function writeFixture (route, response, destination) {
   escapedName = escapedName.substr(0, 240);
 
   const pathToFixture = `./fixtures/${escapedName}${extension}`;
-
-  const body = route.isJson ?
+  console.log("writing " + pathToFixture)
+  if (response.responseBody === undefined) {
+    console.error("MISSING RESPONSE!!! " + pathToFixture)    
+  } else {
+    const body = route.isJson ?
     JSON.stringify(JSON.parse(response.responseBody), null, 2) :
     response.responseBody;
 
-  fs.writeFileSync(path.join(destination, pathToFixture), body);
+    fs.writeFileSync(path.join(destination, pathToFixture), body);
+  }  
   return pathToFixture;
 }
 

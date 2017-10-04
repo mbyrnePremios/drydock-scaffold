@@ -35,7 +35,7 @@ function main (options) {
   let getTransactions;
   if (options._.length && options._[0] === "import") {
     const filepath = path.resolve(process.cwd(), options._[1]);
-    getTransactions = doImport(filepath);
+    getTransactions = doImport(filepath, options._[2]);
   } else {
     getTransactions = runProxy(options);
   }
@@ -105,11 +105,12 @@ function runProxy (options) {
     .then(() => transactions);
 }
 
-function doImport(filepath) {
+function doImport(filepath, filter) {
   return Promise.resolve()
     .then(() => {
       console.log("importing HAR file...");
-      return importHar(filepath);
+      console.log("filter:" + filter);
+      return importHar(filepath, filter);
     });
 }
 
